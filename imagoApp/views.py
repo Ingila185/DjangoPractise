@@ -1,6 +1,6 @@
 import requests
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.query import Match, Term, MatchAll
 from rest_framework.response import Response
@@ -8,6 +8,8 @@ from rest_framework import status
 from .elasticsearch_utils import get_es_client
 from elasticsearch import Elasticsearch
 from django.core.paginator import Paginator, EmptyPage
+from rest_framework.permissions import IsAuthenticated
+
 def check_image_url(url):
     """Check if an image exists at the given URL."""
     try:
@@ -97,3 +99,8 @@ def search_imago_data(request):
         import traceback
         print(traceback.format_exc())
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Ensure the user is authenticated
+def secret(request):
+    return Response({"message": "This is a secret message!"})

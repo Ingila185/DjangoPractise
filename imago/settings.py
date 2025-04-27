@@ -29,7 +29,11 @@ REST_FRAMEWORK = {
      'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',  # JSON response
         'rest_framework.renderers.BrowsableAPIRenderer',  # Browsable API
-    ],}
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    }
 
 ALLOWED_HOSTS = []
 ELASTICSEARCH_HOST = '5.75.227.63'
@@ -49,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'imagoApp'
 ]
@@ -67,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True  # Or configure specific origins
 
 ROOT_URLCONF = 'imago.urls'
 
