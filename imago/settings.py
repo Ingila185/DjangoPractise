@@ -33,6 +33,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+
+    'DEFAULT_THROTTLE_RATES': {
+        'anon':'10/minute',  # 10 requests per minute
+        'user':'10/minute',  # 10 requests per minute
+    },
     }
 
 ALLOWED_HOSTS = []

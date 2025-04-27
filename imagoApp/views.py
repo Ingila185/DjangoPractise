@@ -1,6 +1,6 @@
 import requests
 
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.query import Match, Term, MatchAll
 from rest_framework.response import Response
@@ -9,6 +9,7 @@ from .elasticsearch_utils import get_es_client
 from elasticsearch import Elasticsearch
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 def check_image_url(url):
     """Check if an image exists at the given URL."""
@@ -104,3 +105,10 @@ def search_imago_data(request):
 @permission_classes([IsAuthenticated])  # Ensure the user is authenticated
 def secret(request):
     return Response({"message": "This is a secret message!"})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Ensure the user is authenticated
+@throttle_classes([UserRateThrottle, AnonRateThrottle])  # Apply throttling
+def throttle_check(request):
+    return Response({"message": "Throttling check passed!"})
