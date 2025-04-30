@@ -10,6 +10,7 @@ from elasticsearch import Elasticsearch
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from .serializers import ImagoSerializer
 
 def check_image_url(url):
     """Check if an image exists at the given URL."""
@@ -86,9 +87,11 @@ def search_imago_data(request):
         except EmptyPage:
             return Response({"results": [], "message": "Page out of range"}, status=status.HTTP_404_NOT_FOUND)
 
+        serializer = ImagoSerializer(paginated_hits, many=True)
         # Return paginated results
         return Response({
-            "results": list(paginated_hits),
+            #"results": list(paginated_hits),
+            "results": serializer.data,
             "page": int(page),
             "page_size": int(page_size),
             "total_pages": paginator.num_pages,
