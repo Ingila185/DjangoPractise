@@ -24,6 +24,7 @@ class ImagoSerializer(serializers.Serializer):
     hoehe = serializers.CharField()
     breite = serializers.CharField()
     db = serializers.CharField()
+    thumbnail_url = serializers.CharField()
 
 class ImagoHitSerializer(serializers.Serializer):
     _index = serializers.CharField()
